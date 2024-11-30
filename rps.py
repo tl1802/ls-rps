@@ -19,15 +19,20 @@ player_wins = 0
 computer_wins = 0
 
 def prompt(message):
+    """shows an arrow for each print"""
     print(f"==> {message}")
 
 def short_input_mapping(selection):
+    """ maps a single letter to a word"""
+
     if selection in SHORT_CHOICES:
         return SHORT_CHOICES[selection]
     else:
         return selection
 
 def display_winner(player, computer):
+    """ displays a message saying who won the round"""
+
     prompt(f"You chose {player}, computer chose {computer}")
 
     if computer in WINNING_CHOICES[player]:
@@ -38,16 +43,20 @@ def display_winner(player, computer):
         prompt("It's a tie!")
 
 def keep_score(player, computer):
+    """updates scores for the player and computer"""
+
+    global player_wins
+    global computer_wins
     if computer in WINNING_CHOICES[player]:
-        global player_wins
-        player_wins += + 1
+        player_wins += 1
         prompt(f'You win this round! ({player_wins} win - first to 3 wins)')
     elif computer in LOSING_CHOICES[player]:
-        global computer_wins
         computer_wins += 1
         prompt(f'Computer wins this round! ({computer_wins} win - first to 3 wins)')
 
 def declare_winner():
+    """declares a winner based on who won more rounds"""
+
     if player_wins > computer_wins:
         prompt(f'You Win! {player_wins} win vs Computer\'s {computer_wins} win')
     else:
@@ -55,14 +64,14 @@ def declare_winner():
 
 while True:
     prompt(f'Choose one: {", ".join(VALID_CHOICES)}')
-    prompt(f'You can also type {", ".join(SHORT_CHOICES.keys())}')
+    prompt(f'You can also type: {", ".join(SHORT_CHOICES.keys())}')
     player_choice = input().lower()
     player_choice = short_input_mapping(player_choice)
 
     while player_choice not in VALID_CHOICES:
         prompt("That's not a valid choice")
         prompt(f'Choose one: {", ".join(VALID_CHOICES)}')
-        prompt(f'You can also type {", ".join(SHORT_CHOICES.keys())}')
+        prompt(f'You can also type: {", ".join(SHORT_CHOICES.keys())}')
         player_choice = input().lower()
         player_choice = short_input_mapping(player_choice)
 
