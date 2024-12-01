@@ -88,12 +88,12 @@ while True:
         prompt("Do you want to play again (y/n)?")
         answer = input().lower()
 
-        if answer.startswith('n') or answer.startswith('y'):
+        if answer == 'n' or answer == 'y':
             break
         else:
             prompt("That's not a valid choice")
 
-    if answer[0] == 'n':
+    if answer == 'n':
         break
 
 declare_winner()
