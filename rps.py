@@ -9,11 +9,7 @@ WINNING_CHOICES = {"rock" : ["scissors", "lizard"],
                     "spock" : ["scissors", "rock"],
                     "lizard" : ["paper", "spock"]}
 
-LOSING_CHOICES = {"rock" : ["paper", "spock"],
-                    "paper" : ["lizard", "scissors"],
-                    "scissors" : ["rock", "spock"],
-                    "spock" : ["paper", "lizard"],
-                    "lizard" : ["scissors", "rock"]}
+WIN_CONDITION = 3
 
 player_wins = 0
 computer_wins = 0
@@ -37,10 +33,10 @@ def display_winner(player, computer):
 
     if computer in WINNING_CHOICES[player]:
         prompt("You win!")
-    elif computer in LOSING_CHOICES[player]:
-        prompt("Computer wins!")
-    else:
+    elif player == computer:
         prompt("It's a tie!")
+    else:
+        prompt("Computer wins!")
 
 def keep_score(player, computer):
     """updates scores for the player and computer"""
@@ -50,7 +46,9 @@ def keep_score(player, computer):
     if computer in WINNING_CHOICES[player]:
         player_wins += 1
         prompt(f'You win this round! ({player_wins} win - first to 3 wins)')
-    elif computer in LOSING_CHOICES[player]:
+    elif player == computer:
+        return
+    else:
         computer_wins += 1
         prompt(f'Computer wins this round! ({computer_wins} win - first to 3 wins)')
 
@@ -62,18 +60,22 @@ def declare_winner():
     else:
         prompt(f'Computer Wins! {computer_wins} win vs your {player_wins} win')
 
-while True:
+def player_turn():
+    """ gets the player's selection"""
+    
     prompt(f'Choose one: {", ".join(VALID_CHOICES)}')
     prompt(f'You can also type: {", ".join(SHORT_CHOICES.keys())}')
     player_choice = input().lower()
     player_choice = short_input_mapping(player_choice)
+    return player_choice
+
+while True:
+
+    player_choice = player_turn()
 
     while player_choice not in VALID_CHOICES:
         prompt("That's not a valid choice")
-        prompt(f'Choose one: {", ".join(VALID_CHOICES)}')
-        prompt(f'You can also type: {", ".join(SHORT_CHOICES.keys())}')
-        player_choice = input().lower()
-        player_choice = short_input_mapping(player_choice)
+        player_choice = player_turn()
 
     computer_choice = random.choice(VALID_CHOICES)
 
@@ -81,7 +83,7 @@ while True:
 
     keep_score(player_choice, computer_choice)
 
-    if player_wins == 3 or computer_wins == 3:
+    if player_wins == WIN_CONDITION or computer_wins == WIN_CONDITION:
         break
 
     while True:
